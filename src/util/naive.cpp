@@ -139,7 +139,8 @@ void naive::simulate(
   size_t max_depth,
   size_t max_paths,
   double ode_step,
-  std::ostream &os)
+  std::ostream &os,
+  double noise_std)
 {
   // the main path queue
   vector<vector<map<string, double>>> paths;
@@ -147,6 +148,8 @@ void naive::simulate(
   for (state st : init)
   {
     map<string, double> init_map = init_to_map(st);
+    init_map["noise_std"] = noise_std;
+    std::cout << "DEBUG 2: Injected into map: " << init_map["noise_std"] << std::endl;
     // setting setting the step, time and mode values
     int init_mode_id = (int)init_map[".mode"];
     init_map[".step"] = 0;
@@ -188,6 +191,7 @@ void naive::simulate(
       if (path_count > 0)
         os << ",";
       // outputting a trajectory
+      std::cout << "DEBUG 4: MAADE IT " << init_map["noise_std"] << std::endl;
       output_traj(path, os);
       path_count++;
     }

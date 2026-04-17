@@ -43,7 +43,8 @@ void simulate(
   size_t,
   size_t,
   double,
-  std::ostream &);
+  std::ostream &,
+  double noise_std = 0.0);
 } // namespace naive
 
 #endif //PROBREACH_NAIVE_IVP_H

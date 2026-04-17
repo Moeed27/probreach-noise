@@ -248,6 +248,8 @@ double pdrh::node_to_double(pdrh::node *n, std::map<std::string, double> vals)
       double mean = node_to_double(n->operands[0], vals);
       double stddev = node_to_double(n->operands[1], vals);
 
+      std::cout << "DEBUG 3: dist_normal mean=" << mean << " stddev=" << stddev << std::endl;
+
       std::normal_distribution<> dist(mean, stddev);
       return dist(gen);
     }
