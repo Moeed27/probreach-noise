@@ -38,6 +38,8 @@ string in_file = "";
 string out_file = "output.json";
 // time step
 double ode_step = 0.1;
+// noise level
+double noise_std = 0;
 
 // printing help message
 void print_help()
@@ -60,6 +62,8 @@ void print_help()
   cout << "-d - time step in IVP solving (default = " << ode_step << ")"
        << endl;
   cout << "-o - full path to the output file (default = " << out_file << ")"
+       << endl;
+  cout <<"-z - standard deviation for noise (default = " << noise_std << ")"
        << endl;
 }
 
@@ -156,6 +160,17 @@ void parse_cmd(int argc, char *argv[])
       istringstream is(argv[i]);
       is >> out_file;
     }
+    else if ((strcmp(argv[i], "-z") == 0))
+    {
+      i++
+      istringstream is(argv[i]);
+      is >> noise_std;
+      if (noise_std < 0)
+      {
+        cerr << "-z must be positive";
+        exit(EXIT_FAILURE);
+      }
+    }
   }
   // checking if the input file is specified
   if (in_file == "")
@@ -188,9 +203,9 @@ int main(int argc, char *argv[])
   ofs << "{ \"trajectories\" : [" << endl;
 
   // simulating the model
-  //    simulate(modes, init, goal, false, min_depth, max_depth, max_paths, num_points, ofs);
+  //    simulate(modes, init, goal, false, min_depth, max_depth, max_paths, num_points, ofs, noise_std);
   simulate(
-    modes, init, goal, false, min_depth, max_depth, max_paths, ode_step, ofs);
+    modes, init, goal, false, min_depth, max_depth, max_paths, ode_step, ofs, noise_std);
 
   // finalising the output file here
   ofs << "]}" << endl;

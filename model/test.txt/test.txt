@@ -1,0 +1,34 @@
+[0,5]time;
+[0,100]tau;
+[0, 50]T;
+dist_normal(1.0, 0.1) K;
+ 
+{
+mode1;
+invt:
+(T >= 18);
+flow:
+d/dt[T]=- T * K;
+d/dt[tau]=10.0;
+d/dt[K]=0.0;
+jump:
+(T <= 18)==>@2(and (T' = T) (tau' = tau));
+(tau = 1)==> @1(and(T' = T + dist_normal(0.1, 0.01)) (tau' = 0));
+}
+{
+mode2;
+invt:
+(T <= 22);
+flow:
+d/dt[T]=- K * (T - 30);
+d/dt[tau]=10.0;
+d/dt[K]=0.0;
+jump:
+(T >= 22)==>@1(and (T' = T) (tau' = tau));
+(tau = 1)==> @2 (and(T' = T + dist_normal(0.1, 0.01)) (tau' = 0));
+}
+init:
+@1(and (tau = 0)(T = 20));
+ 
+goal:
+@2(and (T >= 19.9) (T <= 20.1));

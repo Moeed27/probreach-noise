@@ -21,4 +21,4 @@ for i in range(0,len(data['trajectories'])):
 			else:
 				df.plot(x='.global_time', y=sys.argv[j], ax=axes[j-1])
 
-plt.show()
+plt.savefig('output_plot.png')

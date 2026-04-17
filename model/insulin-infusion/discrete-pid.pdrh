@@ -97,7 +97,7 @@ dist_normal(60, 10) DG3;
 
 #define k 0.025
 
-#define noise_std 1
+#define noise_std 0
 
 [0,1e3] x1; //[min^(-1)] (remote) effect of insulin on glucose distribution (Hovorka 2004)
 [0,1e3] x2; //[min^(-1)] (remote) effect of insulin on glucose disposal (Hovorka 2004)
