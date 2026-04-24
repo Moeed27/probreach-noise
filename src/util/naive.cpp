@@ -155,8 +155,10 @@ void naive::simulate(
     init_map[".step"] = 0;
     init_map[".time"] = 0;
     init_map[".global_time"] = 0;
-    // setting the temporary set of paths
-    paths.push_back({init_map});
+    for (size_t i = 0; i < max_paths; i++) {
+      // setting the temporary set of paths
+      paths.push_back({init_map});
+    }
   }
   // current path count
   size_t path_count = 0;
