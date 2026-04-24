@@ -6,8 +6,11 @@ model: pha;
 [0, 10] tau; // local time
 [0, 10] time; // local time (required)
 [0, 500] v; // speed of the ball (m/s)
-dist_normal(25,3) v0; // initial speed of the ball (m)
+//dist_normal(25,1) v0; // initial speed of the ball (m)
+[25, 25] v0;
 dist_discrete(0.7854:0.9,1.0472:0.09,0.5236:0.01) alpha; // angle to horizon (rad)
+
+[0, 1000] noise_std;
 
 {
 mode 1;
@@ -20,16 +23,16 @@ flow:
 
 
 jump:
-(and (tau > 1e-3) (Sy <= 0) (Sy >= 0)) ==> @1(and (Sx' = Sx)
+(and (tau > 1e-3) (Sy <= 0)(Sy >= 0)) ==> @1(and (Sx' = Sx)
 						(Sy' = 0)
 						(tau' = 0)
-						(v' = 0.7 * v)
+						(v' = dist_normal(1, noise_std) * v)
 						(v0' = v0)
 						(alpha' = alpha));
 }
 
 init:
-@1(and (Sx = 0) (Sy = 0) (tau = 0) (v = v0));
+@1(and (Sx = 0) (Sy = 0) (tau = 0) (v = 25));
 
 goal:
-@1(and (tau = 0) (Sx >= 100));
+@1(and (tau > 0) (Sx >= 100) (Sy >= 0));

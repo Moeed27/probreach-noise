@@ -36,6 +36,7 @@ dist_exp(0.01) 			c1;
 dist_exp(0.03) 			c2;
 dist_exp(0.02) 			c3;
 
+[0,1000] noise_std;
 [0,365]time;
 [0,365]tau;
 [0,1000.0]x;
@@ -53,9 +54,9 @@ d/dt[z]= (-z * gamma + c3);
 d/dt[tau]=1.0;
 jump:
 (x+y<=r0)==>@2(and	(tau'=0)
-			(x'=x)
-			(y'=y)
-			(z'=z)
+			(x'=x + dist_normal(0,noise_std))
+			(y'=y + dist_normal(0,noise_std))
+			(z'=z + dist_normal(0,noise_std))
 			(alphax'=alphax)
 			(alphay'=alphay)
 			(betax'=betax)
@@ -80,9 +81,9 @@ d/dt[z]= ((z0 - z) * gamma + c3);
 d/dt[tau]= 1.0;
 jump:
 (x+y>=r1)==>@1(and	(tau'=0)
-			(x'=x)
-			(y'=y)
-			(z'=z)
+			(x'=x + dist_normal(0,noise_std))
+			(y'=y + dist_normal(0,noise_std))
+			(z'=z + dist_normal(0,noise_std))
 			(alphax'=alphax)
 			(alphay'=alphay)
 			(betax'=betax)

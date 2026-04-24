@@ -191,7 +191,6 @@ void naive::simulate(
       if (path_count > 0)
         os << ",";
       // outputting a trajectory
-      std::cout << "DEBUG 4: MAADE IT " << init_map["noise_std"] << std::endl;
       output_traj(path, os);
       path_count++;
     }
