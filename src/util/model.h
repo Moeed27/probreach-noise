@@ -120,7 +120,7 @@ void push_time_bounds(node *, node *);
 
 void set_model_type();
 
-void output_traj(std::vector<std::map<std::string, double>>, std::ostream &);
+void output_traj(std::vector<std::map<std::string, double>> traj, bool reached, std::ostream &);
 
 //    std::vector<mode*> get_psy_path(std::map<std::string, std::vector<capd::interval>>);
 std::vector<mode *> get_psy_path(

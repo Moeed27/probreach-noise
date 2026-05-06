@@ -149,7 +149,6 @@ void naive::simulate(
   {
     map<string, double> init_map = init_to_map(st);
     init_map["noise_std"] = noise_std;
-    std::cout << "DEBUG 2: Injected into map: " << init_map["noise_std"] << std::endl;
     // setting setting the step, time and mode values
     int init_mode_id = (int)init_map[".mode"];
     init_map[".step"] = 0;
@@ -183,6 +182,18 @@ void naive::simulate(
     //        double dt = node_to_double(cur_mode.time.second) / num_points;
     vector<map<string, double>> traj = trajectory(
       cur_mode.odes, init_map, node_to_double(cur_mode.time.second), ode_step);
+
+    bool goal_reached = false;
+    for (size_t i = 0; i < traj.size(); i++) {
+        for (state st : goal) {
+            if (st.id == (int)traj[i][".mode"] && node_to_boolean(st.prop, traj[i])) {
+                goal_reached = true;
+                break;
+            }
+        }
+        if (goal_reached) break;
+    }
+
     // checking if the maximum depth for the path has been reached
     // if the maximum depth is reached; in simulation mode
     // the lower bound is ignored
@@ -193,7 +204,7 @@ void naive::simulate(
       if (path_count > 0)
         os << ",";
       // outputting a trajectory
-      output_traj(path, os);
+      output_traj(path, goal_reached, os);
       path_count++;
     }
     // flag for checking if at least one jump condition has been satisfied
@@ -227,7 +238,7 @@ void naive::simulate(
             // adding the computed trajectory to the end of the current path
             path.insert(path.end(), traj.begin(), traj.begin() + i + 1);
             // outputting the unsatisfying trajectory
-            output_traj(path, os);
+            output_traj(path, goal_reached, os);
             return;
           }
         }
@@ -251,7 +262,7 @@ void naive::simulate(
               // adding the computed trajectory to the end of the current path
               path.insert(path.end(), traj.begin(), traj.begin() + i + 1);
               // outputting the unsatisfying trajectory
-              output_traj(path, os);
+              output_traj(path, goal_reached, os);
               return;
             }
           }
@@ -302,7 +313,7 @@ void naive::simulate(
       // outputting the incomplete path
       path.insert(path.end(), traj.begin(), traj.end());
       // outputting the unsatisfying trajectory
-      output_traj(path, os);
+      output_traj(path, goal_reached, os);
     }
   }
   if (verify)

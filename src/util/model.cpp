@@ -809,12 +809,15 @@ void pdrh::set_model_type()
  */
 void pdrh::output_traj(
   std::vector<std::map<std::string, double>> traj,
+  bool reached,
   std::ostream &os)
 {
-  os << "[" << endl;
+  os << "{" << endl;
+  os << "  \"reached\" : " << (reached ? "true" : "false") << "," << endl;
+  os << "  \"values\" : [" << endl;
   // outputting the path into the file
-  for (map<string, double> val : traj)
-  {
+  for (size_t i = 0; i < traj.size(); ++i) {
+    map<string, double>& val = traj[i];
     os << "{" << endl;
     for (auto it = val.begin(); it != val.end(); it++)
     {
@@ -824,9 +827,10 @@ void pdrh::output_traj(
       os << endl;
     }
     os << "}";
-    if (val != traj[traj.size() - 1])
+    if (i < traj.size() - 1)
       os << ",";
-    os << endl;
+    os << endl;  
   }
-  os << "]" << endl;
+  os << "  ]" << endl; 
+  os << "}" << endl;
 }

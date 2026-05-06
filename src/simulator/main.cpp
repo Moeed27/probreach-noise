@@ -160,6 +160,7 @@ void parse_cmd(int argc, char *argv[])
       istringstream is(argv[i]);
       is >> out_file;
     }
+    // noise level intensity
     else if ((strcmp(argv[i], "-z") == 0))
     {
       i++;
@@ -202,7 +203,6 @@ int main(int argc, char *argv[])
   ofs.open(out_file);
   ofs << "{ \"trajectories\" : [" << endl;
 
-  std::cout << "DEBUG 1: Main noise_std = " << noise_std << std::endl;
   // simulating the model
   //    simulate(modes, init, goal, false, min_depth, max_depth, max_paths, num_points, ofs, noise_std);
   simulate(
